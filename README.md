@@ -167,38 +167,6 @@ streamlit run app.py
 ```
 The app will open in your browser at `http://localhost:8501`
 
-### Project 3: Ask-the-Web Agent
-A project to create a simplified Perplexity-style agent that searches the web, reads content, and provides answers.
-
-**Learning objectives:**
-- Understand why tool calling is useful for LLMs
-- Implement a loop to parse model calls and execute Python functions
-- Use function schemas (docstrings and type hints) to scale across tools
-- Apply LangChain for function calling, reasoning, and multi-step planning
-- Combine Llama-3 7B Instruct with a web search tool to build an ask-the-web agent
-
-### Project 4: Build a Deep Research System
-A project focused on reasoning workflows, where you design a multi-step agent that plans, gathers evidence, and synthesizes findings.
-
-**Learning objectives:**
-- Apply inference-time scaling methods (zero-shot/few-shot CoT, self-consistency, sequential decoding, tree-of-thoughts)
-- Gain intuition for training reasoning models with the STaR approach
-- Build a deep-research agent that combines reasoning with live web search
-- Extend deep research into a multi-agent system
-
-### Project 5: Build a Multimodal Generation Agent
-A project to build an agent that combines textual question answering with image and video generation capabilities within a unified system.
-
-**Learning objectives:**
-- Generate images from text using Stable Diffusion XL
-- Create short clips with a text-to-video model
-- Build a multimodal agent that handles questions and media requests
-- Develop a simple Gradio UI to interact with the agent
-
-### Week 6: Capstone Project
-
-**Purpose:** Design and build your own system based on what you learned in weeks 1 to 5. This can be a product prototype, an internal tool, a research workflow, or the first step toward a startup idea. The hope is that some projects will continue after the cohort, using the connections and community built here.
-
 ## Reference docs and readings
 
 The following documentation pages cover the core libraries and services used across projects:
