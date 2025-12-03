@@ -75,6 +75,98 @@ A hands-on project to build a retrieval-based chatbot that answers customer ques
 - Build a RAG (Retrieval-Augmented Generation) pipeline
 - Package the chatbot in a minimal Streamlit UI
 
+**Setup instructions:**
+
+#### Step 1: Navigate to the project folder
+```bash
+cd project
+```
+
+#### Step 2: Install Conda (if not already installed)
+If you don't have Conda installed, download and install Miniconda:
+- **macOS/Linux:** Visit [Miniconda](https://docs.conda.io/en/latest/miniconda.html) and follow installation instructions
+- **Windows:** Download the Windows installer from the same link
+
+Verify installation:
+```bash
+conda --version
+```
+
+#### Step 3: Create the Conda environment
+Create the environment from the `environment.yml` file:
+```bash
+conda env create -f environment.yml
+```
+
+This will install:
+- Python 3.11
+- langchain (0.3.25)
+- langchain-community (0.3.24)
+- sentence-transformers (4.1.0)
+- streamlit (1.45.1)
+- openai (1.79.0)
+- faiss-cpu (1.11.0)
+- unstructured (0.17.2)
+
+#### Step 4: Activate the environment
+```bash
+conda activate rag-chatbot
+```
+
+You should see `(rag-chatbot)` in your terminal prompt.
+
+#### Step 5: Register as Jupyter kernel (optional, for notebook use)
+If you plan to use the Jupyter notebook:
+```bash
+python -m ipykernel install --user --name=rag-chatbot --display-name "rag-chatbot"
+```
+
+#### Step 6: Install Ollama for local LLM inference
+Ollama allows you to run the Gemma model locally.
+
+**For macOS:**
+```bash
+# Install via Homebrew
+brew install ollama
+```
+
+**For Linux:**
+```bash
+# Install via curl
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+**For Windows:**
+Download the installer from [ollama.com](https://ollama.com/download)
+
+#### Step 7: Start Ollama server
+Open a terminal and start the Ollama server (keep this terminal running):
+```bash
+ollama serve
+```
+
+#### Step 8: Pull the Gemma model
+Open a **new terminal** window and pull the model:
+```bash
+ollama pull gemma3:1b
+```
+
+This will download the Gemma 3 1B model (~1.5GB). Wait for the download to complete.
+
+#### Step 9: Run the application
+
+**To use the Jupyter notebook:**
+```bash
+jupyter notebook
+```
+Then open `rag_chatbot.ipynb` and select the "rag-chatbot" kernel from the kernel picker.
+
+**To run the Streamlit app:**
+```bash
+streamlit run app.py
+```
+The app will open in your browser at `http://localhost:8501`
+
 ### Project 3: Ask-the-Web Agent
 A project to create a simplified Perplexity-style agent that searches the web, reads content, and provides answers.
 
