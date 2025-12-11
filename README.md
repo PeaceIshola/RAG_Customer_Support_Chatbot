@@ -1,189 +1,237 @@
-# AI Engineering Projects Overview
+# RAG Customer Support Chatbot
 
-This repository contains five hands-on projects completed over five weeks, followed by a capstone in week six. The first five projects build capability with large language models, retrieval, tool use, research workflows, and multimodality. Week six is a capstone where you design your own system, tool, or startup idea based on your learnings. The instructions below are generic and apply to all projects. Each project also includes additional instructions specific to that project.
+A retrieval-augmented generation (RAG) chatbot that answers customer support questions using local LLMs and vector search.
 
-Each week, a new project is added to the repo at a specific release date and time. The weekly release includes the notebook, data, and environment file.
+## Features
 
-## Quick start
+- Modular Python architecture with separate files for each function
+- FAISS vector store for efficient document retrieval
+- Local LLM inference using Ollama (Gemma 3 1B)
+- PDF and web page document ingestion
+- Interactive Streamlit web interface
 
-You can run the projects either on **Google Colab** (no local setup required) or **locally** (using Conda environments for reproducibility).
+## What it does
 
-### Option A: Run in Google Colab
-1. Upload the notebook for the current week to Colab.
-2. If needed, add your API tokens using `os.environ[...] = "value"`.
-3. Ensure that any local file paths are adjusted for Colab.
+- Ingests and chunks unstructured documents (PDFs and web pages)
+- Creates embeddings and indexes them with FAISS
+- Retrieves relevant context for user queries
+- Generates responses using a local LLM (Gemma 3 1B)
+- Provides a web interface for chatting with the bot
 
-### Option B: Run locally with Conda
-Each project comes with an `environment.yml` file that specifies its dependencies. This ensures consistent environments.
+## Quick Setup
 
-1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download).
-2. Create and activate the environment from the provided YAML file:
-   ```bash
-   conda env create -f environment.yml
-   conda activate <ENV_NAME>
-   ```
-   The environment name is set inside the YAML. You can change it if desired.
-3. Launch Jupyter and open the notebook for the current week:
-   ```bash
-   jupyter notebook
-   ```
+### Option 1: Automated Script (Recommended)
 
-**Recommendation:** Use Colab for projects 1 and 5, and local development for projects 2, 3, and 4.
+**Prerequisites:** 
+- Python 3.8 or higher
+- [Ollama](https://ollama.com/download)
 
-## Accounts and keys you may need
-
-The projects are designed so they do not require specific API keys or tokens by default. However, they are flexible, meaning you can switch to different LLMs, models, and systems. Depending on what you choose to experiment with, you may need to set up API keys or tokens from certain providers.  
-
-Possible API keys you might need:
-- `OPENAI_API_KEY` for OpenAI models  
-- `ANTHROPIC_API_KEY` for Claude models  
-- `GOOGLE_API_KEY` for Gemini models  
-- `HUGGINGFACEHUB_API_TOKEN` for Hugging Face hosted models and datasets  
-- `TAVILY_API_KEY` or `SERPAPI_API_KEY` for web search tools  
-- `PINECONE_API_KEY`, or alternatives if using remote vector stores  
-
-## Project expectations
-
-- Projects are designed flexibly. They guide you step by step and provide the workflow. You will need to implement the sections marked with "your code here".  
-- There are multiple ways to implement each section. Feel free to deviate from the provided template and experiment with different algorithms, models, and systems.  
-- No submission is required. In the live deep-dive sessions, we will review each project in detail and show one possible implementation.  
-
-## Troubleshooting
-
-- Post questions in the corresponding Q/A space. You are also welcome to share your thoughts, opinions, and interesting findings in the same space.  
-
-## Weekly projects
-
-### Project 1: Build an LLM Playground
-An introductory project to explore how prompts, tokenization, and decoding settings work in practice, building the foundation for effective use of large language models.
-
-**Learning objectives:**
-- Tokenization of raw text into discrete tokens
-- Basics of GPT-2 and Transformer architectures
-- Loading pre-trained LLMs with Hugging Face
-- Decoding strategies for text generation
-- Completion vs. instruction-tuned models
-
-### Project 2: Customer-Support Chatbot for an E-Commerce Store
-A hands-on project to build a retrieval-based chatbot that answers customer questions for an imaginary e-commerce store.
-
-**Learning objectives:**
-- Ingest and chunk unstructured documents
-- Create embeddings and index with FAISS
-- Retrieve context and design prompts
-- Run an open-weight LLM locally with Ollama
-- Build a RAG (Retrieval-Augmented Generation) pipeline
-- Package the chatbot in a minimal Streamlit UI
-
-**Setup instructions:**
-
-#### Step 1: Navigate to the project folder
 ```bash
-cd project
+cd everstorm_chatbot
+
+# Start Ollama (in separate terminal, keep running)
+ollama serve
+
+# Run setup
+./setup.sh
+
+# Activate environment
+source venv/bin/activate
+
+# Run application
+python main.py          # Build pipeline
+streamlit run app.py    # Web interface
 ```
 
-#### Step 2: Install Conda (if not already installed)
-If you don't have Conda installed, download and install Miniconda:
-- **macOS/Linux:** Visit [Miniconda](https://docs.conda.io/en/latest/miniconda.html) and follow installation instructions
-- **Windows:** Download the Windows installer from the same link
+### Option 2: Manual Setup
 
-Verify installation:
+#### Step 1: Check Python Version
+Verify Python 3.8+:
 ```bash
-conda --version
+python3 --version
 ```
 
-#### Step 3: Create the Conda environment
-Create the environment from the `environment.yml` file:
+If not installed, download from [python.org](https://www.python.org/downloads/)
+
+#### Step 2: Create Virtual Environment
 ```bash
-conda env create -f environment.yml
+cd everstorm_chatbot
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-This will install:
+#### Step 3: Install Dependencies
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+This installs:
 - Python 3.11
 - langchain (0.3.25)
 - langchain-community (0.3.24)
 - sentence-transformers (4.1.0)
 - streamlit (1.45.1)
-- openai (1.79.0)
 - faiss-cpu (1.11.0)
 - unstructured (0.17.2)
+- pypdf (5.1.0)
 
-#### Step 4: Activate the environment
+#### Step 3: Install Ollama
+
+**macOS:**
 ```bash
-conda activate rag-chatbot
-```
-
-You should see `(rag-chatbot)` in your terminal prompt.
-
-#### Step 5: Register as Jupyter kernel (optional, for notebook use)
-If you plan to use the Jupyter notebook:
-```bash
-python -m ipykernel install --user --name=rag-chatbot --display-name "rag-chatbot"
-```
-
-#### Step 6: Install Ollama for local LLM inference
-Ollama allows you to run the Gemma model locally.
-
-**For macOS:**
-```bash
-# Install via Homebrew
 brew install ollama
 ```
 
-**For Linux:**
+**Linux:**
 ```bash
-# Install via curl
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-**For Windows:**
-Download the installer from [ollama.com](https://ollama.com/download)
+**Windows:** Download from [ollama.com](https://ollama.com/download)
 
-#### Step 7: Start Ollama server
-Open a terminal and start the Ollama server (keep this terminal running):
+#### Step 4: Start Ollama Server
+Open a terminal and keep this running:
 ```bash
 ollama serve
 ```
 
-#### Step 8: Pull the Gemma model
-Open a **new terminal** window and pull the model:
+#### Step 5: Pull the Model
+In a new terminal:
 ```bash
 ollama pull gemma3:1b
 ```
 
-This will download the Gemma 3 1B model (~1.5GB). Wait for the download to complete.
+This downloads the Gemma 3 1B model (~1.5GB)
 
-#### Step 9: Run the application
+#### Step 6: Run the Application
 
-**To use the Jupyter notebook:**
+**Build the pipeline:**
 ```bash
-jupyter notebook
+python main.py
 ```
-Then open `rag_chatbot.ipynb` and select the "rag-chatbot" kernel from the kernel picker.
+This will:
+1. Load PDF documents from `data/` folder
+2. Chunk documents into smaller pieces
+3. Generate embeddings and build FAISS index
+4. Test the LLM connection
+5. Validate the RAG chain with test questions
 
-**To run the Streamlit app:**
+**Launch the web interface:**
 ```bash
 streamlit run app.py
 ```
-The app will open in your browser at `http://localhost:8501`
+Opens at `http://localhost:8501`
 
-## Reference docs and readings
+## Testing Individual Components
 
-The following documentation pages cover the core libraries and services used across projects:
-- [Conda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/index.html): Manage isolated Python environments and dependencies with Conda  
-- [Pip documentation](https://pip.pypa.io/en/stable/user_guide/): Install and manage Python packages with pip  
-- [duckduckgo-search](https://pypi.org/project/duckduckgo-search/): Python library to query DuckDuckGo search results programmatically  
-- [gradio](https://www.gradio.app/guides): Build quick interactive demos and UIs for machine learning models  
-- [Streamlit documentation](https://docs.streamlit.io/): Build and deploy simple web apps for data and ML projects  
-- [huggingface_hub](https://huggingface.co/docs/huggingface_hub/index): Access and share models, datasets, and spaces on Hugging Face Hub  
-- [langchain](https://python.langchain.com/docs/get_started/introduction): Framework for building applications powered by LLMs with memory, tools, and chains  
-- [numpy](https://numpy.org/doc/stable/): Core library for numerical computing and array operations in Python  
-- [openai](https://platform.openai.com/docs): Official API docs for using OpenAI models like GPT and embeddings  
-- [tiktoken](https://github.com/openai/tiktoken): Fast tokenizer library for OpenAI models, used for counting tokens  
-- [torch](https://pytorch.org/docs/stable/index.html): PyTorch deep learning framework for training and running models  
-- [transformers](https://huggingface.co/docs/transformers/index): Hugging Face library for using pre-trained LLMs and fine-tuning them  
-- [llama-index](https://docs.llamaindex.ai/en/stable/): Data framework for connecting external data sources to LLMs  
-- [chromadb](https://docs.trychroma.com/): Open-source vector database for storing and retrieving embeddings in RAG systems  
+You can test each component separately for debugging or development:
 
+### Test LLM Connection
+```bash
+python -c "from src.test_llm import test_llm; test_llm()"
+```
 
+### Load and Count Documents
+```bash
+python -c "from src.load_documents import load_documents; docs = load_documents(); print(f'Loaded {len(docs)} documents')"
+```
+
+### Create Document Chunks
+```bash
+python -c "from src.load_documents import load_documents; from src.chunk_text import chunk_documents; docs = load_documents(); chunks = chunk_documents(docs); print(f'Created {len(chunks)} chunks')"
+```
+
+### Build Vector Store Only
+```bash
+python -c "from src.load_documents import load_documents; from src.chunk_text import chunk_documents; from src.build_vector_store import build_vector_store; docs = load_documents(); chunks = chunk_documents(docs); build_vector_store(chunks)"
+```
+
+### Test RAG Chain (requires existing FAISS index)
+```bash
+python -c "from src.build_rag_chain import build_rag_chain; from src.test_rag import test_rag_chain; from langchain.vectorstores import FAISS; from langchain.embeddings import SentenceTransformerEmbeddings; embeddings = SentenceTransformerEmbeddings(model_name='thenlper/gte-small'); vectordb = FAISS.load_local('faiss_index', embeddings, allow_dangerous_deserialization=True); retriever = vectordb.as_retriever(search_kwargs={'k': 8}); chain = build_rag_chain(retriever); test_rag_chain(chain)"
+```
+
+## Directory Structure
+
+```
+everstorm_chatbot/
+├── main.py                    # Main script that runs the full pipeline
+├── app.py                     # Streamlit web interface
+├── setup.sh                   # Automated setup script
+├── Dockerfile                 # Docker container definition
+├── docker-compose.yml         # Docker orchestration
+├── environment.yml            # Conda environment specification
+├── src/                       # Source code modules
+│   ├── __init__.py           # Package initialization
+│   ├── load_documents.py     # Loads PDF files and web pages
+│   ├── chunk_text.py         # Splits documents into chunks
+│   ├── build_vector_store.py # Builds FAISS vector store
+│   ├── test_llm.py           # Tests the LLM connection
+│   ├── build_rag_chain.py    # Creates the RAG chain
+│   └── test_rag.py           # Validates RAG with test questions
+├── data/                      # PDF documents (source data)
+│   ├── Everstorm_Payment_refund_and_security.pdf
+│   ├── Everstorm_Product_sizing_and_care_guide.pdf
+│   ├── Everstorm_Return_and_exchange_policy.pdf
+│   └── Everstorm_Shipping_and_Delivery_Policy.pdf
+└── faiss_index/               # Vector store index (generated)
+```
+
+## Module Descriptions
+
+- **src/build_vector_store.py** - Creates embeddings using `thenlper/gte-small` model and builds FAISS index
+- **src/test_llm.py** - Tests Ollama connection with Gemma 3 1B model
+- **src/build_rag_chain.py** - Creates the RAG chain combining retriever, prompt template, and LLM
+- **src/test_rag.py** - Validates the RAG chain with predefined test questions
+- **main.py** - Orchestrates all modules to build the complete pipeline
+- **app.py** - Streamlit web interface for interactive chatting
+
+## Technologies Used
+
+- **LangChain** - Framework for building LLM applications
+- **FAISS** - Vector store for efficient similarity search
+- **Sentence Transformers** - Text embedding generation
+- **Ollama** - Local LLM inference (Gemma 3 1B)
+- **Streamlit** - Web interface framework
+
+## Troubleshooting
+
+### Virtual environment not activated
+```bash
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+```
+
+### Module not found
+Make sure virtual environment is activated and dependencies are installed:
+```bash
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Ollama not responding
+```bash
+# Check if running
+curl http://localhost:11434
+
+# Restart Ollama
+pkill ollama
+ollama serve
+```
+
+### FAISS index missing
+```bash
+# Rebuild index
+python main.py
+```
+
+### Docker port conflict
+Edit `docker-compose.yml` and change the port:
+``**Add your own documents:** Place PDF files in `data/` folder
+- **Change system prompt:** Edit `src/build_rag_chain.py`
+- **Modify UI:** Edit `app.py`
+- **Use different model:** Change model name in `src/test_llm.py` and `src/build_rag_chain.py`
+- **Adjust chunk size:** Edit parameters in `src/chunk_text.py`
+- **Change retrieval count:** Modify `k` value in `src/build_vector_store.py`
 
